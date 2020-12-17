@@ -6,6 +6,8 @@ import Profile2 from "../../assets/profile-images/Ellipse -2.png";
 import Profile3 from "../../assets/profile-images/Ellipse -3.png";
 import Profile4 from "../../assets/profile-images/Ellipse -4.png";
 import Profile5 from "../../assets/profile-images/Ellipse -5.png";
+import EmployeeService from "./EmployeeService";
+
 class PayrollForm extends React.Component {
     constructor(props) {
         super(props)
@@ -122,8 +124,32 @@ class PayrollForm extends React.Component {
         }
     }
 
-    save = () => {
-        alert(`${this.state.name} ${this.state.gender} ${this.state.profilePic} ${this.state.department} ${this.state.salary} ${new Date(Date.UTC(this.state.year, this.state.month, this.state.day))} ${this.state.note}`);
+    stringifyDate = (date) => {
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        const newDate = !date ? "undefined" : new Date(Date.parse(date)).toLocaleDateString('en-GB', options);
+        return newDate;
+    }
+
+    save = async (event) => {
+        event.preventDefault();
+        alert(`${this.state.name} ${this.state.gender} ${this.state.profilePic} ${this.state.department} ${this.state.salary} ${this.stringifyDate(new Date(Date.UTC(this.state.year, this.state.month, this.state.day)))} ${this.state.note}`);
+
+        let object={
+            id:'',
+            name: this.state.name,
+            profilePic:this.state.profilePic,
+            gender:this.state.gender,
+            department:this.state.department,
+            salary:this.state.salary,
+            startDate:new Date(Date.UTC(this.state.year, this.state.month, this.state.day)),
+            note:this.state.note
+        }
+
+        new EmployeeService().addEmployee(object).then(data=>{
+            console.log("Data Added Successfully !");
+        }).catch(err=>{
+            console.log("Error While Adding !");
+        })
     }
 
     render() {
