@@ -1,4 +1,31 @@
 {
   "EmployeePayrollDB": [
+    {
+      "id": 1,
+      "name": "Yudhajit Koley",
+      "profilePic": "../../assets/profile-images/Ellipse -3.png",
+      "gender": "male",
+      "department": [
+        "Engineer",
+        "Others"
+      ],
+      "salary": "72000",
+      "startDate": "2020-12-14T00:00:00.000Z",
+      "note": "Yudhajit is added Successfully !"
+    },
+    {
+      "id": 2,
+      "name": "Rohit Sen",
+      "profilePic": "../../assets/profile-images/Ellipse -2.png",
+      "gender": "male",
+      "department": [
+        "Sales",
+        "Finance",
+        "HR"
+      ],
+      "salary": "76000",
+      "startDate": "2020-12-15T00:00:00.000Z",
+      "note": "Rohit is added Successfully !"
+    }
   ]
 }

@@ -8,7 +8,7 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
-          <Route path=''>
+          <Route exact path="/payroll-form">
             <PayrollForm />
           </Route>
         </Switch>
