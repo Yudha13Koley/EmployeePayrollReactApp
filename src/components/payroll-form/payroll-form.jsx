@@ -7,6 +7,7 @@ import Profile3 from "../../assets/profile-images/Ellipse -3.png";
 import Profile4 from "../../assets/profile-images/Ellipse -4.png";
 import Profile5 from "../../assets/profile-images/Ellipse -5.png";
 import EmployeeService from "./EmployeeService";
+import { Link } from 'react-router-dom';
 
 class PayrollForm extends React.Component {
     constructor(props) {
@@ -134,22 +135,41 @@ class PayrollForm extends React.Component {
         event.preventDefault();
         alert(`${this.state.name} ${this.state.gender} ${this.state.profilePic} ${this.state.department} ${this.state.salary} ${this.stringifyDate(new Date(Date.UTC(this.state.year, this.state.month, this.state.day)))} ${this.state.note}`);
 
-        let object={
-            id:'',
+        let object = {
+            id: '',
             name: this.state.name,
-            profilePic:this.state.profilePic,
-            gender:this.state.gender,
-            department:this.state.department,
-            salary:this.state.salary,
-            startDate:new Date(Date.UTC(this.state.year, this.state.month, this.state.day)),
-            note:this.state.note
+            profilePic: this.state.profilePic,
+            gender: this.state.gender,
+            department: this.state.department,
+            salary: this.state.salary,
+            startDate: new Date(Date.UTC(this.state.year, this.state.month, this.state.day)),
+            note: this.state.note
         }
 
-        new EmployeeService().addEmployee(object).then(data=>{
+        new EmployeeService().addEmployee(object).then(data => {
             console.log("Data Added Successfully !");
-        }).catch(err=>{
+        }).catch(err => {
             console.log("Error While Adding !");
         })
+
+        window.location.replace("../");
+    }
+
+    reset = () => {
+        this.setState({
+            name: '',
+            profilePic: '',
+            gender: '',
+            department: [],
+            salary: 50000,
+            day: "1",
+            month: "0",
+            year: "2020",
+            startDate: '',
+            note: '',
+            NameErr: '',
+            StartDateErr: ''
+        });
     }
 
     render() {
@@ -165,7 +185,7 @@ class PayrollForm extends React.Component {
                     </div>
                 </header>
                 <div id="formId" class="form-content">
-                    <form class="form" action="#" onSubmit={this.save} onReset="resetForm()">
+                    <form class="form" action="#" onSubmit={this.save} onReset={this.reset}>
                         <div class="form-head">Employee Payroll Form</div>
                         <div class="row-content">
                             <label for="name" class="label text">Name</label>
@@ -300,7 +320,7 @@ class PayrollForm extends React.Component {
                                 placeholder="Your Notes Here.." value={this.state.note} onChange={this.changeNoteHandler}></textarea>
                         </div>
                         <div class="buttonParent">
-                            <a href="../pages/homePage.html" class="resetButton button cancelButton">Cancel</a>
+                            <Link to="home-page" class="resetButton button cancelButton">Cancel</Link>
                             <div class="submit-reset">
                                 <button type="submit" class="button submitButton">Submit</button>
                                 <button type="reset" class="resetButton button">Reset</button>

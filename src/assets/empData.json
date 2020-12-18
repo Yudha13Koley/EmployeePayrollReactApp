@@ -26,6 +26,61 @@
       "salary": "76000",
       "startDate": "2020-12-15T00:00:00.000Z",
       "note": "Rohit is added Successfully !"
+    },
+    {
+      "id": 3,
+      "name": "Bhuban Ghosh",
+      "profilePic": "../../assets/profile-images/Ellipse -3.png",
+      "gender": "male",
+      "department": [
+        "HR",
+        "Sales",
+        "Engineer"
+      ],
+      "salary": "68000",
+      "startDate": "2020-11-19T00:00:00.000Z",
+      "note": "Bhuban is added"
+    },
+    {
+      "id": 4,
+      "name": "Shreya Dutta",
+      "profilePic": "../../assets/profile-images/Ellipse -4.png",
+      "gender": "female",
+      "department": [
+        "Sales",
+        "Finance",
+        "Engineer"
+      ],
+      "salary": "83000",
+      "startDate": "2020-12-06T00:00:00.000Z",
+      "note": "Shreya is added !"
+    },
+    {
+      "id": 5,
+      "name": "Tania Sarkar",
+      "profilePic": "../../assets/profile-images/Ellipse -1.png",
+      "gender": "female",
+      "department": [
+        "HR",
+        "Sales",
+        "Finance"
+      ],
+      "salary": "66000",
+      "startDate": "2020-11-20T00:00:00.000Z",
+      "note": "Tania is added !"
+    },
+    {
+      "id": 6,
+      "name": "Samar Das",
+      "profilePic": "../../assets/profile-images/Ellipse -2.png",
+      "gender": "male",
+      "department": [
+        "Engineer",
+        "Others"
+      ],
+      "salary": "47000",
+      "startDate": "2020-11-19T00:00:00.000Z",
+      "note": "Samar is added !"
     }
   ]
 }
