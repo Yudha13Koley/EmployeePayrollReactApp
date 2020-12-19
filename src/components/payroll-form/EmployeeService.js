@@ -8,4 +8,12 @@ export default class EmployeeService {
     getAllEmployee() {
         return AxiosService.getAllEmpService(`${this.baseURL}`);
     }
+
+    getEmployeeById(id) {
+        return AxiosService.getEmployeeById(`${this.baseURL + id}`);
+    }
+
+    editDetailsOfEmployee(data) {
+        return AxiosService.putService(`${this.baseURL + data.id}`, data);
+    }
 }

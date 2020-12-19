@@ -8,6 +8,7 @@ import Profile2 from "../../assets/profile-images/Ellipse -2.png";
 import Profile3 from "../../assets/profile-images/Ellipse -3.png";
 import Profile4 from "../../assets/profile-images/Ellipse -4.png";
 import Profile5 from "../../assets/profile-images/Ellipse -5.png";
+import EmployeeService from "../payroll-form/EmployeeService";
 
 const Display = (props) => {
     return (
@@ -63,7 +64,12 @@ const remove = (id) => {
 }
 
 const edit = (id) => {
-    console.log("Edit Operation");
+    new EmployeeService().getEmployeeById(id).then(data => {
+        if (!data.data) return;
+        localStorage.setItem('editEmp', JSON.stringify(data.data));
+        window.location.replace("../payroll-form");
+    })
+        .catch(error => { console.log(error) });
 }
 
 const stringifyDate = (date) => {
