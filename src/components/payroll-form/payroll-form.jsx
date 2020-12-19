@@ -25,8 +25,9 @@ class PayrollForm extends React.Component {
             startDate: '',
             note: '',
             NameErr: '',
-            StartDateErr: ''
-
+            StartDateErr: '',
+            isUpdate: false,
+            id: ''
         }
         this.changeNameHandler = this.changeNameHandler.bind(this);
         this.changeProfilePicHandler = this.changeProfilePicHandler.bind(this);
@@ -36,6 +37,122 @@ class PayrollForm extends React.Component {
         this.changeDayHandler = this.changeDayHandler.bind(this);
         this.changeMonthHandler = this.changeMonthHandler.bind(this);
         this.changeYearHandler = this.changeYearHandler.bind(this);
+    }
+
+    componentDidMount() {
+        window.addEventListener('load', this.checkForUpdate);
+    }
+
+    checkForUpdate = () => {
+        const employeePayrollJson = localStorage.getItem('editEmp');
+        let isUpdateAv = employeePayrollJson ? true : false;
+        if (!isUpdateAv) return;
+        let employeePayrollObj = JSON.parse(employeePayrollJson);
+        this.setForm(employeePayrollObj);
+    }
+
+    setForm = (obj) => {
+        let date = this.stringifyDate(obj.startDate).split(" ");
+        this.setMonthValue(date[1]);
+        this.setGender(obj.gender);
+        this.setProfilePic(obj.profilePic);
+        this.setDepartment(obj.department);
+        this.setState({
+            name: obj.name,
+            profilePic: obj.profilePic,
+            gender: obj.gender,
+            department: obj.department,
+            salary: obj.salary,
+            day: date[0],
+            year: date[2],
+            startDate: obj.startDate,
+            note: obj.note,
+            NameErr: '',
+            StartDateErr: '',
+            isUpdate: true,
+            id: obj.id
+        });
+    }
+
+    setDepartment = (deptArr) => {
+        for (let dept of deptArr) {
+            if (this.refs.dep1.value === dept) {
+                this.refs.dep1.checked = true;
+            }
+            if (this.refs.dep2.value === dept) {
+                this.refs.dep2.checked = true;
+            }
+            if (this.refs.dep3.value === dept) {
+                this.refs.dep3.checked = true;
+            }
+            if (this.refs.dep4.value === dept) {
+                this.refs.dep4.checked = true;
+            }
+            if (this.refs.dep5.value === dept) {
+                this.refs.dep5.checked = true;
+            }
+        }
+    }
+
+    setGender = (string) => {
+        if (this.refs.gender1.value === string) {
+            this.refs.gender1.checked = true;
+        }
+        if (this.refs.gender2.value === string) {
+            this.refs.gender2.checked = true;
+        }
+        if (this.refs.gender3.value === string) {
+            this.refs.gender3.checked = true;
+        }
+    }
+
+    setProfilePic = (string) => {
+        if (this.refs.profileImg1.value === string) {
+            this.refs.profileImg1.checked = true;
+        }
+        if (this.refs.profileImg2.value === string) {
+            this.refs.profileImg2.checked = true;
+        }
+        if (this.refs.profileImg3.value === string) {
+            this.refs.profileImg3.checked = true;
+        }
+        if (this.refs.profileImg4.value === string) {
+            this.refs.profileImg4.checked = true;
+        }
+        if (this.refs.profileImg5.value === string) {
+            this.refs.profileImg5.checked = true;
+        }
+    }
+
+    setMonthValue = (value) => {
+        switch (value) {
+            case "January": value = "0";
+                break;
+            case "February": value = "1";
+                break;
+            case "March": value = "2";
+                break;
+            case "April": value = "3";
+                break;
+            case "May": value = "4";
+                break;
+            case "June": value = "5";
+                break;
+            case "July": value = "6";
+                break;
+            case "August": value = "7";
+                break;
+            case "September": value = "8";
+                break;
+            case "October": value = "9";
+                break;
+            case "November": value = "10";
+                break;
+            case "December": value = "11";
+                break;
+            default: value = "1";
+        }
+        this.setState({ month: value })
     }
 
     checkName = (name) => {
@@ -136,7 +253,7 @@ class PayrollForm extends React.Component {
         alert(`${this.state.name} ${this.state.gender} ${this.state.profilePic} ${this.state.department} ${this.state.salary} ${this.stringifyDate(new Date(Date.UTC(this.state.year, this.state.month, this.state.day)))} ${this.state.note}`);
 
         let object = {
-            id: '',
+            id: this.state.id,
             name: this.state.name,
             profilePic: this.state.profilePic,
             gender: this.state.gender,
@@ -145,12 +262,21 @@ class PayrollForm extends React.Component {
             startDate: new Date(Date.UTC(this.state.year, this.state.month, this.state.day)),
             note: this.state.note
         }
-
-        new EmployeeService().addEmployee(object).then(data => {
-            console.log("Data Added Successfully !");
-        }).catch(err => {
-            console.log("Error While Adding !");
-        })
+        if (!this.state.isUpdate) {
+            new EmployeeService().addEmployee(object).then(data => {
+                console.log("Data Added Successfully !");
+            }).catch(err => {
+                console.log("Error While Adding !");
+            });
+        }
+        if (this.state.isUpdate) {
+            new EmployeeService().editDetailsOfEmployee(object).then(data => {
+                console.log("Data Edited Successfully !");
+                this.setState({ isUpdate: false });
+            }).catch(err => {
+                console.log("Error While Adding !");
+            });
+        }
 
         window.location.replace("../");
     }
@@ -196,27 +322,27 @@ class PayrollForm extends React.Component {
                             <label for="profile" class="label text">Profile Image</label>
                             <div class="profile-radio-content">
                                 <label>
-                                    <input type="radio" id="profile1" name="profile" onChange={this.changeProfilePicHandler} value="../../assets/profile-images/Ellipse -1.png"
+                                    <input type="radio" id="profile1" name="profile" onChange={this.changeProfilePicHandler} value="../../assets/profile-images/Ellipse -1.png" ref="profileImg1"
                                         required />
                                     <img src={Profile1} class="profile" id="image1" alt="" />
                                 </label>
                                 <label>
-                                    <input type="radio" id="profile2" name="profile" onChange={this.changeProfilePicHandler} value="../../assets/profile-images/Ellipse -2.png"
+                                    <input type="radio" id="profile2" name="profile" onChange={this.changeProfilePicHandler} value="../../assets/profile-images/Ellipse -2.png" ref="profileImg2"
                                         required />
                                     <img src={Profile2} class="profile" id="image2" alt="" />
                                 </label>
                                 <label>
-                                    <input type="radio" id="profile3" name="profile" onChange={this.changeProfilePicHandler} value="../../assets/profile-images/Ellipse -3.png"
+                                    <input type="radio" id="profile3" name="profile" onChange={this.changeProfilePicHandler} value="../../assets/profile-images/Ellipse -3.png" ref="profileImg3"
                                         required />
                                     <img src={Profile3} class="profile" id="image3" alt="" />
                                 </label>
                                 <label>
-                                    <input type="radio" id="profile4" name="profile" onChange={this.changeProfilePicHandler} value="../../assets/profile-images/Ellipse -4.png"
+                                    <input type="radio" id="profile4" name="profile" onChange={this.changeProfilePicHandler} value="../../assets/profile-images/Ellipse -4.png" ref="profileImg4"
                                         required />
                                     <img src={Profile4} class="profile" id="image4" alt="" />
                                 </label>
                                 <label>
-                                    <input type="radio" id="profile5" name="profile" onChange={this.changeProfilePicHandler} value="../../assets/profile-images/Ellipse -5.png"
+                                    <input type="radio" id="profile5" name="profile" onChange={this.changeProfilePicHandler} value="../../assets/profile-images/Ellipse -5.png" ref="profileImg5"
                                         required />
                                     <img src={Profile5} class="profile" id="image5" alt="" />
                                 </label>
@@ -225,26 +351,26 @@ class PayrollForm extends React.Component {
                         <div class="row-content">
                             <label for="gender" class="label text">Gender</label>
                             <div>
-                                <input type="radio" id="male" name="gender" value="male" onChange={this.changeGenderHandler} />
+                                <input type="radio" id="male" name="gender" value="male" onChange={this.changeGenderHandler} ref="gender1" />
                                 <label for="male" class="text">Male</label>
-                                <input type="radio" id="female" name="gender" value="female" onChange={this.changeGenderHandler} />
+                                <input type="radio" id="female" name="gender" value="female" onChange={this.changeGenderHandler} ref="gender2" />
                                 <label for="female" class="text">Female</label>
-                                <input type="radio" id="others" name="gender" value="others" onChange={this.changeGenderHandler} />
+                                <input type="radio" id="others" name="gender" value="others" onChange={this.changeGenderHandler} ref="gender3" />
                                 <label for="others" class="text">Others</label>
                             </div>
                         </div>
                         <div class="row-content">
                             <label for="department" class="label text">Department</label>
                             <div>
-                                <input type="checkbox" class="checkbox" id="hr" name="department" value="HR" onChange={this.changeDepartmentHandler} />
+                                <input type="checkbox" class="checkbox" id="hr" name="department" value="HR" onChange={this.changeDepartmentHandler} ref="dep1" />
                                 <label class="text" for="hr">HR</label>
-                                <input type="checkbox" class="checkbox" id="sales" name="department" value="Sales" onChange={this.changeDepartmentHandler} />
+                                <input type="checkbox" class="checkbox" id="sales" name="department" value="Sales" onChange={this.changeDepartmentHandler} ref="dep2" />
                                 <label class="text" for="sales">Sales</label>
-                                <input type="checkbox" class="checkbox" id="finance" name="department" value="Finance" onChange={this.changeDepartmentHandler} />
+                                <input type="checkbox" class="checkbox" id="finance" name="department" value="Finance" onChange={this.changeDepartmentHandler} ref="dep3" />
                                 <label class="text" for="finance">Finance</label>
-                                <input type="checkbox" class="checkbox" id="engineer" name="department" value="Engineer" onChange={this.changeDepartmentHandler} />
+                                <input type="checkbox" class="checkbox" id="engineer" name="department" value="Engineer" onChange={this.changeDepartmentHandler} ref="dep4" />
                                 <label class="text" for="engineer">Engineer</label>
-                                <input type="checkbox" class="checkbox" id="others" name="department" value="Others" onChange={this.changeDepartmentHandler} />
+                                <input type="checkbox" class="checkbox" id="others" name="department" value="Others" onChange={this.changeDepartmentHandler} ref="dep5" />
                                 <label class="text" for="others">Others</label>
                             </div>
                         </div>

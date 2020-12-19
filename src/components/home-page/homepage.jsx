@@ -24,6 +24,7 @@ class homePage extends React.Component {
             console.log("Data After Get Call : " + data.data);
             this.setState({ employeeArray: data.data });
             console.log(this.state.employeeArray);
+            localStorage.removeItem('editEmp');
         }).catch(err => {
             console.log(err);
         })
