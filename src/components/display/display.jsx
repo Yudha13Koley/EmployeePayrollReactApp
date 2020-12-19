@@ -60,7 +60,11 @@ const handleProfilePic = (profilePath) => {
 }
 
 const remove = (id) => {
-    console.log("Delete Opertaion");
+    new EmployeeService().deleteEmployeeById(id).then(data => {
+        console.log("Deleted Data Successfully !");
+        window.location.replace("../");
+    })
+        .catch(error => { console.log(error) });
 }
 
 const edit = (id) => {
