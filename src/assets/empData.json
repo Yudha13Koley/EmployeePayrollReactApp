@@ -34,8 +34,7 @@
       "gender": "male",
       "department": [
         "HR",
-        "Sales",
-        "Engineer"
+        "Sales"
       ],
       "salary": "68000",
       "startDate": "2020-11-19T00:00:00.000Z",
@@ -85,16 +84,18 @@
     {
       "id": 7,
       "name": "Robin Dutta",
-      "profilePic": "../../assets/profile-images/Ellipse -3.png",
+      "profilePic": "../../assets/profile-images/Ellipse -5.png",
       "gender": "male",
       "department": [
-        "Engineer",
         "Finance",
+        "Sales",
+        "HR",
+        "Engineer",
         "Others"
       ],
-      "salary": "58000",
-      "startDate": "2020-11-20T00:00:00.000Z",
-      "note": "Robin is added ! Edited Value"
+      "salary": "95000",
+      "startDate": "2020-11-25T00:00:00.000Z",
+      "note": "Robin is added ! Edited Value ! Robin is add rounder !"
     }
   ]
 }
